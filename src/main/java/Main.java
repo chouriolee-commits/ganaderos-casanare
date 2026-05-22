@@ -1,53 +1,81 @@
 package src.main.java;
+
+import java.util.Scanner;
+
 public class Main {
 
-    public static void main(String[] args){
+    static ArbolBST arbol = new ArbolBST();
+    static Scanner sc = new Scanner(System.in);
 
-        ArbolBST arbol = new ArbolBST();
+    public static void main(String[] args) {
 
-        arbol.insertar(50, "Hato La Aurora", "Hato Corozal");
+        // Datos iniciales
+        arbol.insertar(104, "Holstein",     550.0, 4);
+        arbol.insertar(101, "Angus",        620.5, 6);
+        arbol.insertar(110, "Brahman",      480.0, 3);
+        arbol.insertar(99,  "Hereford",     510.0, 5);
+        arbol.insertar(106, "Simmental",    700.2, 2);
 
-        arbol.insertar(30, "Finca El Encanto", "Yopal");
+        int opcion;
+        do {
+            System.out.println("\n==== MENÚ - REGISTRO DE RESES ====");
+            System.out.println("1. Insertar res");
+            System.out.println("2. Consultar res por código");
+            System.out.println("3. Modificar res");
+            System.out.println("4. Mostrar recorrido Pre-Orden");
+            System.out.println("0. Salir");
+            System.out.print("Selecciona una opción: ");
+            opcion = Integer.parseInt(sc.nextLine().trim());
 
-        arbol.insertar(70, "hacienda La Esperanza", "aguazul");
+            switch (opcion) {
+                case 1 -> {
+                    System.out.print("Código: ");
+                    int codigo = Integer.parseInt(sc.nextLine().trim());
+                    System.out.print("Raza: ");
+                    String raza = sc.nextLine().trim();
+                    System.out.print("Peso (kg): ");
+                    double peso = Double.parseDouble(sc.nextLine().trim());
+                    System.out.print("Edad (años): ");
+                    int edad = Integer.parseInt(sc.nextLine().trim());
+                    arbol.insertar(codigo, raza, peso, edad);
+                    System.out.println("Res insertada.");
+                }
+                case 2 -> {
+                    System.out.print("Código a buscar: ");
+                    int codigo = Integer.parseInt(sc.nextLine().trim());
+                    NodoBST nodo = arbol.buscar(codigo);
+                    if (nodo == null) {
+                        System.out.println("No se encontró ninguna res con ese código.");
+                    } else {
+                        System.out.println("Código: " + nodo.codigo);
+                        System.out.println("Raza:   " + nodo.raza);
+                        System.out.println("Peso:   " + nodo.peso + " kg");
+                        System.out.println("Edad:   " + nodo.edad + " años");
+                    }
+                }
+                case 3 -> {
+                    System.out.print("Código de la res a modificar: ");
+                    int codigo = Integer.parseInt(sc.nextLine().trim());
+                    NodoBST nodo = arbol.buscar(codigo);
+                    if (nodo == null) {
+                        System.out.println("No se encontró ninguna res con ese código.");
+                    } else {
+                        System.out.print("Nueva raza (" + nodo.raza + "): ");
+                        nodo.raza = sc.nextLine().trim();
+                        System.out.print("Nuevo peso (" + nodo.peso + "): ");
+                        nodo.peso = Double.parseDouble(sc.nextLine().trim());
+                        System.out.print("Nueva edad (" + nodo.edad + "): ");
+                        nodo.edad = Integer.parseInt(sc.nextLine().trim());
+                        System.out.println("Datos actualizados.");
+                    }
+                }
+                case 4 -> arbol.preOrden();
+                case 0 -> System.out.println("¡Hasta luego!");
+                default -> System.out.println("Opción no válida.");
+            }
 
-           arbol.insertar(20, "Finca San isidro", "Nunchía");
+        } while (opcion != 0);
 
-        arbol.insertar(40, "Hato Caribayona", "Paz de Ariporo");
-
-        arbol.insertar(60, "Finca Las Brisas", "Tauramena");
-
-        arbol.insertar(80, "Hacienda La Palma", "Maní");
-
-        arbol.insertar(10, "Finca El Porvenir",  "Pore");
-
-           arbol.insertar(25, "Finca las Garzas", "Trinidad");
-
-        arbol.insertar(35, "Hato la Cabaña", "Orocué");
-
-        arbol.insertar(45, "Finca Buenavista", "Monterrey");
-
-        //Ejecutar los tres recorridos
-        arbol.preOrden();
-        arbol.inOrden();
-        arbol.postOrden();
-
-        //Probar búsqueda
-        System.out.println("\n Búsqueda");
-        NodoBST resultado = arbol.buscar(45);
-        if(resultado != null){
-            System.out.println("Encontrada: " + resultado.codigo + " - " + resultado.nombreFinca + " (" + resultado.municipio + ")");
-        }else{
-            System.out.println("Finca no encontrado. ");
-        }
-
-        NodoBST noExiste = arbol.buscar(33);
-        if(noExiste != null){
-            System.out.println("Encontrada: " + noExiste.codigo);
-        }else{
-            System.out.println("Código 33: Fínca no encontrada.");
-        }
-
-
+        sc.close();
     }
 }
